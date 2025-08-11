@@ -91,13 +91,78 @@ class ShapeType(str, Enum):
 
 
 class LocationType(str, Enum):
-    ROOM = "room"
-    FACILITY = "facility"
-    OFFICE = "office"
-    MEETING = "meeting"
-    DINING = "dining"
-    STUDY = "study"
+    # Entrances & Exits
     ENTRANCE = "entrance"
+    EXIT = "exit"
+    EMERGENCY_EXIT = "emergency_exit"
+
+    # Stores & Retail
+    STORE = "store"
+    SUPERMARKET = "supermarket"
+    CLOTHING_STORE = "clothing_store"
+    ELECTRONICS_STORE = "electronics_store"
+    BOOKSTORE = "bookstore"
+    TOY_STORE = "toy_store"
+    JEWELRY_STORE = "jewelry_store"
+    BEAUTY_STORE = "beauty_store"
+    HOME_DECOR_STORE = "home_decor_store"
+    FOOTWEAR_STORE = "footwear_store"
+
+    # Dining
+    DINING = "dining"
+    FOOD_COURT = "food_court"
+    RESTAURANT = "restaurant"
+    CAFE = "cafe"
+    FAST_FOOD = "fast_food"
+    ICE_CREAM_SHOP = "ice_cream_shop"
+
+    # Entertainment
+    CINEMA = "cinema"
+    ARCADE = "arcade"
+    PLAY_AREA = "play_area"
+    BOWLING_ALLEY = "bowling_alley"
+    EVENT_HALL = "event_hall"
+
+    # Services
+    RECEPTION = "reception"
+    CUSTOMER_SERVICE = "customer_service"
+    INFORMATION_DESK = "information_desk"
+    SECURITY_OFFICE = "security_office"
+    FIRST_AID = "first_aid"
+    ATM = "atm"
+    BANK = "bank"
+    MONEY_EXCHANGE = "money_exchange"
+    LOST_AND_FOUND = "lost_and_found"
+
+    # Facilities
+    RESTROOM = "restroom"
+    MALE_RESTROOM = "male_restroom"
+    FEMALE_RESTROOM = "female_restroom"
+    FAMILY_RESTROOM = "family_restroom"
+    WHEELCHAIR_ACCESS = "wheelchair_access"
+    ELEVATOR = "elevator"
+    ESCALATOR = "escalator"
+    STAIRCASE = "staircase"
+
+    # Back Office / Staff Areas
+    OFFICE = "office"
+    STAFF_ROOM = "staff_room"
+    STORAGE = "storage"
+    LOADING_DOCK = "loading_dock"
+    MAINTENANCE_ROOM = "maintenance_room"
+
+    # Parking & Transportation
+    PARKING = "parking"
+    BIKE_PARKING = "bike_parking"
+    TAXI_STAND = "taxi_stand"
+    BUS_STOP = "bus_stop"
+
+    # Miscellaneous
+    KIOSK = "kiosk"
+    VENDING_MACHINE = "vending_machine"
+    PHOTO_BOOTH = "photo_booth"
+    CHARGING_STATION = "charging_station"
+    SMOKING_AREA = "smoking_area"
 
 
 class ConnectorType(str, Enum):
