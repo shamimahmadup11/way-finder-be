@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from typing import Optional, List
 import logging
 
-from src.datamodel.database.domain.DigitalSignage import Path
+from src.datamodel.database.domain.DigitalSignage import Path, Location
 from src.datamodel.datavalidation.apiconfig import ApiConfig
 
 logger = logging.getLogger(__name__)
@@ -31,6 +31,8 @@ class PathListItem(BaseModel):
 
     start_point_id: str
     end_point_id: str
+    start_point_name: Optional[str] = None
+    end_point_name: Optional[str] = None
 
     is_published: bool
     is_multifloor: bool
@@ -60,6 +62,13 @@ async def main(
 
         paths = await Path.find(filter_query).to_list()
 
+        # Prefetch start/end location names
+        location_ids = {p.start_point_id for p in paths if getattr(p, "start_point_id", None)} | {p.end_point_id for p in paths if getattr(p, "end_point_id", None)}
+        location_names = {}
+        if location_ids:
+            locations = await Location.find({"location_id": {"$in": list(location_ids)}, "status": "active"}).to_list()
+            location_names = {loc.location_id: loc.name for loc in locations}
+
         path_list: List[PathListItem] = []
         for p in paths:
             item = PathListItem(
@@ -69,6 +78,8 @@ async def main(
                 created_by=p.created_by,
                 start_point_id=p.start_point_id,
                 end_point_id=p.end_point_id,
+                start_point_name=location_names.get(p.start_point_id),
+                end_point_name=location_names.get(p.end_point_id),
                 is_published=p.is_published,
                 is_multifloor=p.is_multifloor,
                 floors=p.floors or [],
