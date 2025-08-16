@@ -192,19 +192,16 @@ class Building(Document):
 
 
 class Event(Document):
-    event_id: str = Field(default_factory=lambda: str(uuid.uuid4()), description="Unique identifier for the event")
-    title: str = Field(..., description="Event title")
-    event_type: str = Field(..., description="Type of event")
-    date: str = Field(..., description="Event date")
+    event_id: str = Field(description="Unique identifier for the event")
+    name: str = Field(..., description="Event title")
+    start_date: str = Field(..., description="Event start date")
+    end_date: str = Field(..., description="Event end date")
     image_url: Optional[str] = Field(None, description="Event image URL")
     description: Optional[str] = Field(None, description="Event description")
-    location_id: Optional[str] = Field(None, description="Associated location ID")
     is_published: bool = Field(default=True, description="Whether event is published")
     created_by: Optional[str] = Field(None, description="User who created the event")
-    datetime: float = Field(default_factory=lambda: time.time(), description="Timestamp when event was created")
     updated_by: Optional[str] = Field(None, description="User who last updated the event")
-    update_on: Optional[float] = Field(None, description="Timestamp of last update")
-    status: str = Field(default="active", description="Status of the event")
+    updated_on: Optional[float] = Field(None, description="Timestamp of last update")
     metadata: Optional[Dict[str, Any]] = Field(default_factory=dict, description="Additional metadata")
 
     class Settings:
