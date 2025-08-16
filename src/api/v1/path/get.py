@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from typing import Optional, List
 import logging
 
-from src.datamodel.database.domain.DigitalSignage import Path, Location
+from src.datamodel.database.domain.DigitalSignage import Path, Location, FloorSegment
 from src.datamodel.datavalidation.apiconfig import ApiConfig
 
 logger = logging.getLogger(__name__)
@@ -38,6 +38,7 @@ class PathListItem(BaseModel):
     is_multifloor: bool
     floors: List[str] = []
     connector_shared_ids: List[str] = []
+    floor_segments: List[FloorSegment] = []
 
     tags: List[str] = []
     datetime: float
@@ -84,6 +85,7 @@ async def main(
                 is_multifloor=p.is_multifloor,
                 floors=p.floors or [],
                 connector_shared_ids=p.connector_shared_ids or [],
+                floor_segments=p.floor_segments or [],
                 tags=p.tags or [],
                 datetime=p.datetime,
                 status=p.status,
