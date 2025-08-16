@@ -12,7 +12,9 @@ logging.basicConfig(level=logging.INFO)
 
 # MongoDB connection details
 MONGO_DATABASE_URL = os.getenv("MONGO_DATABASE_URL")
-MONGO_DATABASE_NAME = os.getenv("MONGO_DATABASE_NAME", "digital-signage")
+# MONGO_DATABASE_NAME = os.getenv("MONGO_DATABASE_NAME", "digital-signage")
+MONGO_DATABASE_NAME = os.getenv("MONGO_DATABASE_NAME", "wayfinder-db")
+
 
 async def check_db_connection():
     try:
