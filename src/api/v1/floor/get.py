@@ -9,10 +9,7 @@ from src.core.database.dbs.getdb import postresql as db
 import time
 from sqlalchemy.ext.asyncio import AsyncSession
 
-
-
 logger = logging.getLogger(__name__)
-
 
 def api_config():
     config = {

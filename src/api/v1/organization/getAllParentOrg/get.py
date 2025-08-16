@@ -1,3 +1,4 @@
+
 from fastapi import HTTPException, Depends, Request, status
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Literal
@@ -19,36 +20,44 @@ def api_config():
     config = {
         "path": "",
         "status_code": 201,
-        "tags": ["Organization"],
-        "summary": "Create and save Entity data",
+        "tags": ["group"],
+        "summary": "Create and save group data",
         "response_model": dict,
-        "description": "This API endpoint creates a new entity and saves it in the database.",
-        "response_description": "Details of the Entity.",
+        "description": "This API endpoint creates a new group and saves it in the database.",
+        "response_description": "Details of the created group.",
         "deprecated": False,
     }
     return ApiConfig(**config)
 
 async def get_all_root_parents(db: AsyncSession):
     try:
-        # Create a SELECT statement using SQLAlchemy Core
-        query = select(Entity).where(
+        # Query for root parent entities (parent_uuid is NULL)
+        root_query = select(Entity).where(
             and_(
-                Entity.parent_uuid.is_(None),      # parent_uuid is NULL
-                Entity.entity_type == "parent"      # entity_type is 'parent'
+                Entity.parent_uuid.is_(None),
+                Entity.entity_type == "parent"
             )
         )
-        
-        # Execute the query asynchronously
-        result = await db.execute(query)
-        
-        # Fetch all results
-        entities = result.scalars().all()
+        root_result = await db.execute(root_query)
+        root_entities = root_result.scalars().all()
 
-        return {"entities": jsonable_encoder(entities)}
+        # Query for non-root parent entities (parent_uuid is NOT NULL)
+        non_root_query = select(Entity).where(
+            and_(
+                Entity.entity_type == "entity"
+            )
+        )
+        non_root_result = await db.execute(non_root_query)
+        non_root_entities = non_root_result.scalars().all()
+
+        return {
+            "parent_entities": jsonable_encoder(root_entities),
+            "child_entities": jsonable_encoder(non_root_entities)
+        }
+
     except Exception as e:
-        logger.error(f"Error fetching root parent entities: {str(e)}")
+        logger.error(f"Error fetching parent entities: {str(e)}")
         raise HTTPException(status_code=500, detail="Error fetching entities")
-
 async def main(request: Request, db: AsyncSession = Depends(db)):
     """
     # Authenticate the user and fetch all entities they have created.
@@ -89,7 +98,3 @@ async def main(request: Request, db: AsyncSession = Depends(db)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authentication failed")
 
     return await get_all_root_parents(db=db)
-
-
-
-
